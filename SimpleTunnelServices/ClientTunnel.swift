@@ -42,26 +42,26 @@ open class ClientTunnel: Tunnel {
 
 	// MARK: Interface
 
-	/// Start the TCP connection to the tunnel server.
+    /// Start the TCP connection to the tunnel server.
 	open func startTunnel(_ provider: NETunnelProvider) -> SimpleTunnelError? {
-
-		guard let serverAddress = provider.protocolConfiguration.serverAddress else {
-			return .badConfiguration
-		}
+        
+        guard let serverAddress = provider.protocolConfiguration.serverAddress else {
+            return .badConfiguration
+        }
 
 		let endpoint: NWEndpoint
 
 		if let colonRange = serverAddress.rangeOfCharacter(from: CharacterSet(charactersIn: ":"), options: [], range: nil) {
 			// The server is specified in the configuration as <host>:<port>.
             
-            let hostname = serverAddress.substring(with: serverAddress.startIndex..<colonRange.lowerBound)
-			let portString = serverAddress.substring(with: serverAddress.index(after: colonRange.lowerBound)..<serverAddress.endIndex)
+            let hostname = serverAddress[serverAddress.startIndex ..< colonRange.lowerBound]
+			let portString = serverAddress[serverAddress.index(after: colonRange.lowerBound) ..< serverAddress.endIndex]
 
 			guard !hostname.isEmpty && !portString.isEmpty else {
 				return .badConfiguration
 			}
 
-			endpoint = NWHostEndpoint(hostname:hostname, port:portString)
+			endpoint = NWHostEndpoint(hostname: String(hostname), port: String(portString))
 		}
 		else {
 			// The server is specified in the configuration as a Bonjour service name.
@@ -98,7 +98,11 @@ open class ClientTunnel: Tunnel {
 				return
 			}
 
-			let lengthData = data
+            guard let lengthData = data else {
+                simpleTunnelLog("No data availiable")
+                self.closeTunnelWithError(SimpleTunnelError.internalError as NSError)
+                return
+            }
 
 			guard lengthData.count == MemoryLayout<UInt32>.size else {
 				simpleTunnelLog("Length data length (\(lengthData.count)) != sizeof(UInt32) (\(MemoryLayout<UInt32>.size)")
@@ -125,7 +129,11 @@ open class ClientTunnel: Tunnel {
 					return
 				}
 
-				let payloadData = data
+                guard let payloadData = data else {
+                    simpleTunnelLog("No data availiable")
+                    self.closeTunnelWithError(SimpleTunnelError.internalError as NSError)
+                    return
+                }
 
 				guard payloadData.count == Int(totalLength) else {
 					simpleTunnelLog("Payload data length (\(payloadData.count)) != payload length (\(totalLength)")
