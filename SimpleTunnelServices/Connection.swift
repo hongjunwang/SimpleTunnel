@@ -78,11 +78,9 @@ open class Connection: NSObject {
 		identifier = connectionIdentifier
 		isExclusiveTunnel = false
 		super.init()
-		if let t = tunnel {
-			// Add this connection to the tunnel's set of connections.
-			t.addConnection(self)
-		}
-
+		
+        // Add this connection to the tunnel's set of connections.
+        tunnel?.addConnection(self)
 	}
 
 	public init(connectionIdentifier: Int) {
@@ -95,9 +93,7 @@ open class Connection: NSObject {
 	/// Set a new tunnel for the connection.
 	func setNewTunnel(_ newTunnel: Tunnel) {
 		tunnel = newTunnel
-		if let t = tunnel {
-			t.addConnection(self)
-		}
+        tunnel?.addConnection(self)
 	}
 
 	/// Close the connection.
