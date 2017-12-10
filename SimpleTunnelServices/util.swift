@@ -13,7 +13,7 @@ import Darwin
 public enum SimpleTunnelError: Error {
     case badConfiguration
     case badConnection
-	case internalError
+    case internalError
 }
 
 /// A queue of blobs of data
@@ -33,7 +33,7 @@ class SavedData {
 
 	/// Add a data blob and offset to the end of the list.
 	func append(_ data: Data, offset: Int) {
-		chain.append(data: data, offset: offset)
+        chain.append((data: data, offset: offset))
 	}
 
 	/// Write as much of the data in the list as possible to a stream
