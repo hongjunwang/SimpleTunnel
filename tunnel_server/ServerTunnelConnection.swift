@@ -106,7 +106,7 @@ class ServerTunnelConnection: Connection {
 			connect(utunSocket, UnsafePointer<sockaddr>($0), socklen_t(sizeofValue(socketAddressControl)))
 		}
 
-		if let errorString = String(UTF8String: strerror(errno)) where connectResult < 0 {
+		if let errorString = String(UTF8String: strerror(errno)), connectResult < 0 {
 			simpleTunnelLog("Failed to create a utun interface: \(errorString)")
 			close(utunSocket)
 			return -1

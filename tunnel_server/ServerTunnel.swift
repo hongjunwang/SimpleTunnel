@@ -178,7 +178,7 @@ class ServerTunnel: Tunnel, TunnelDelegate, NSStreamDelegate {
 	// MARK: NSStreamDelegate
 
 	/// Handle a stream event.
-    func stream(aStream: NSStream, handleEvent eventCode: NSStreamEvent) {
+    func stream(aStream: Stream, handleEvent eventCode: StreamEvent) {
 		switch aStream {
 
 			case writeStream!:
