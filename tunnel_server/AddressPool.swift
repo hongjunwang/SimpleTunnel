@@ -91,7 +91,7 @@ class AddressPool {
 	}
 
 	/// Deallocate an address in the pool.
-	func deallocateAddress(addrString: String) {
+	func deallocateAddress(_ addrString: String) {
         queue.sync {
 			let address = SocketAddress()
 

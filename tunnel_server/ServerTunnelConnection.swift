@@ -102,9 +102,9 @@ class ServerTunnelConnection: Connection {
 		var socketAddressControl = sockaddr_ctl(sc_len: UInt8(MemoryLayout<sockaddr_ctl>.size), sc_family: UInt8(AF_SYSTEM), ss_sysaddr: UInt16(AF_SYS_CONTROL), sc_id: controlIdentifier, sc_unit: 0, sc_reserved: (0, 0, 0, 0, 0))
 
         let connectResult = withUnsafePointer(to: &socketAddressControl) {
-            $0.withMemoryRebound(to: sockaddr.self, capacity: MemoryLayout<sockaddr>.size, {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
                 connect(utunSocket, $0, socklen_t(MemoryLayout.size(ofValue: socketAddressControl)))
-            })
+            }
         }
 
         if  let errorString = String(utf8String: strerror(errno)), connectResult < 0 {

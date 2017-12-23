@@ -4,6 +4,15 @@
 <dict>
 	<key>IPv4</key>
 	<dict>
+		<key>Routes</key>
+		<array>
+			<dict>
+				<key>Netmask</key>
+				<string>255.255.255.0</string>
+				<key>Address</key>
+				<string>10.10.10.1</string>
+			</dict>
+		</array>
 		<key>Pool</key>
 		<dict>
 			<key>EndAddress</key>
